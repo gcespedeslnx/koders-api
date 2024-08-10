@@ -19,6 +19,16 @@ const koderSchema = new mongoose.Schema({
         required: true,
         match:RegExp(".*@.*..*"),
     },
+    //passsword encriptado
+    password:{
+        type:String,
+        required:true,
+        select:true,
+    },
+    createAt:{
+        type:Date,
+        default:new Date(),
+    },
 });
 
 

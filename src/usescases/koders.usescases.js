@@ -1,13 +1,54 @@
 const Koder = require("../models/koder.model");
-const encryption = require()
+const encryption = require("../lib/encryption");
+const jwt= require("../lib/jwt")
 
 async function login(data){
+     
     const koder = await Koder.findOne({email:data.email}).select("+password");
 
     if(!koder){
-        throw(401, "invalid credential");
+        throw(401, "Invalid credential");
     }
+    
+    const isValidPassword = encryption.compare(data.password, koder.password);
+
+    if(!isValidPassword){
+        throw(401, "Invalid credential");
+    }
+
+    const token = jwt.sign({id:koder._id})
+    
+    return token;
+
 }
+
+
+async function signup(data){
+    const koderFound = await Koder.findOne({email:data.email});
+
+    if(koderFound){
+        throw createError(409, "User already exist");
+    }
+
+    if (!data.password){
+        throw createError(400, "Password is required");
+    }
+
+    if (data.password.length < 6){
+        throw createError(400,"Password mut be at least 6 characters");
+
+    }
+
+    const password = encryption.encrypt(data.password);
+
+    data.password = password;
+
+    const newKoder = await Koder.create(data);
+
+    return newKoder;
+}
+
+
 
 async function create(data){
     const newKoder = await Koder.create(data);
@@ -46,4 +87,6 @@ module.exports ={
     getById,
     updateById,
     deleteById,
+    login,
+    signup,
 };

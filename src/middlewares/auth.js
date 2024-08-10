@@ -1,10 +1,13 @@
 const createError = require("http-errors");
 
+const koderUsesCases = require("../usescases/koders.usescases");
+
+const jwt = require("../lib/jwt");
 
 function auth(request, response, next){
     try {
      
-        const authorization =request.headers.suthorization;
+        const authorization =request.headers.authorization;
 
         const token = authorization?.replace("Bearer","");
          if(!token){
@@ -12,21 +15,22 @@ function auth(request, response, next){
         }
 
         const  payload = jwt.verify(token);
+
+        const koder = koderUsesCases.getById(payload.id);
+
+        request.koder = koder;
+
         next();
         
     } catch (error) {
-        response(error.status, 401);
+        response.status(400);
 
-        responsse.json ({
+        response.json ({
             success:false,
             message:error.message,
         });
-
-        module.exports = auth;
-
-        
+      
     }
-    
+ }
 
-
-}
+ module.exports = auth;
