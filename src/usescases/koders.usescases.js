@@ -1,4 +1,13 @@
 const Koder = require("../models/koder.model");
+const encryption = require()
+
+async function login(data){
+    const koder = await Koder.findOne({email:data.email}).select("+password");
+
+    if(!koder){
+        throw(401, "invalid credential");
+    }
+}
 
 async function create(data){
     const newKoder = await Koder.create(data);

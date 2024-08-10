@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require("cors");
 const kodersRoutes = require("./routes/koders.routes");
 const mentorRoutes = require("./routes/mentor.routes");
 
@@ -6,6 +7,7 @@ const app = express();
 
 app.use(express.json());
 
+app.use(cors())
 app.use("/koders",kodersRoutes);
 
 app.use("/Mentor",mentorRoutes);
