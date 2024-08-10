@@ -6,7 +6,7 @@ const auth = require ("../middlewares/auth");
 
 const router = express.Router();
 
-router.get("/",auth, async(request, response)=>{
+router.get("/",async(request, response)=>{
 try {
    const koders = await kodersUseCases.getAll();
     response.json({
