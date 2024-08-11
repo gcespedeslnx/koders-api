@@ -6,7 +6,7 @@ const auth = require ("../middlewares/auth");
 
 const router = express.Router();
 
-router.get("/",async(request, response)=>{
+router.get("/", async(request, response)=>{
 try {
    const koders = await kodersUseCases.getAll();
     response.json({
@@ -23,7 +23,7 @@ try {
 }
 });
 
-router.get("/:id", async(request, response)=>{
+router.get("/:id", auth, async(request, response)=>{
     try {
         const id = request.params.id;
         const koder = await kodersUseCases.getById(id);
