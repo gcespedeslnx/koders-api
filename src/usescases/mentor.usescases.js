@@ -1,4 +1,4 @@
-const createHttpError = require("http-errors");
+const createError = require("http-errors");
 const Mentor = require("../models/mentor.model");
 // create new mentor 
 async function  create(data){
